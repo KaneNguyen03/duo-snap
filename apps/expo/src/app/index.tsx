@@ -9,7 +9,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets, SafeAreaView } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import * as Linking from "expo-linking";
 import { CameraView, useCameraPermissions } from "expo-camera";

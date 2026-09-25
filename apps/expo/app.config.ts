@@ -12,7 +12,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   updates: {
     fallbackToCacheTimeout: 0,
   },
-  newArchEnabled: true,
+  
   assetBundlePatterns: ["**/*"],
   ios: {
     bundleIdentifier: "com.kanenguyen.duosnap",
@@ -28,7 +28,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: "./assets/icon-light.png",
       backgroundColor: "#180914",
     },
-    edgeToEdgeEnabled: true,
+    
   },
   experiments: {
     tsconfigPaths: true,

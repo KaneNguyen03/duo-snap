@@ -26,7 +26,7 @@ export function getAllowedEmails(source = process.env.ALLOWED_EMAILS) {
   return new Set(
     (source ?? "")
       .split(",")
-      .map((email) => email.trim().toLowerCase())
+      .map((email: string) => email.trim().toLowerCase())
       .filter(Boolean),
   );
 }
