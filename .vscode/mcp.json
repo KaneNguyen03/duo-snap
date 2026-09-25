@@ -1,0 +1,21 @@
+{
+  "servers": {
+    "stitch": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-stitch"],
+      "env": {
+        "GOOGLE_API_KEY": "${input:stitchApiKey}",
+        "PROJECT_ROOT": "${workspaceFolder}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "stitchApiKey",
+      "type": "promptString",
+      "description": "Google API key with Stitch access",
+      "password": true
+    }
+  ]
+}
