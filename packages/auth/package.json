@@ -20,6 +20,7 @@
     "@duo-snap/eslint-config": "workspace:*",
     "@duo-snap/prettier-config": "workspace:*",
     "@duo-snap/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"

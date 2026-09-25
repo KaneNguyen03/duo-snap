@@ -1,5 +1,8 @@
 {
-  "extends": "@duo-snap/tsconfig/compiled-package.json",
-  "include": ["src"],
+  "extends": "@duo-snap/tsconfig/base.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["*.ts", "src"],
   "exclude": ["node_modules"]
 }

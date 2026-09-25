@@ -329,6 +329,9 @@ importers:
       '@duo-snap/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.18.12
       eslint:
         specifier: 'catalog:'
         version: 9.38.0(jiti@2.6.1)
@@ -357,6 +360,9 @@ importers:
       '@duo-snap/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.18.12
       eslint:
         specifier: 'catalog:'
         version: 9.38.0(jiti@2.6.1)
@@ -391,6 +397,9 @@ importers:
       '@duo-snap/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.18.12
       drizzle-kit:
         specifier: ^0.31.5
         version: 0.31.5
