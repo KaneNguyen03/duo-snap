@@ -2,10 +2,10 @@ import type { ConfigContext, ExpoConfig } from "expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "expo",
-  slug: "expo",
-  scheme: "expo",
-  version: "0.1.0",
+  name: "Duo Snap",
+  slug: "duo-snap",
+  scheme: "duosnap",
+  version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/icon-light.png",
   userInterfaceStyle: "automatic",
@@ -15,7 +15,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   newArchEnabled: true,
   assetBundlePatterns: ["**/*"],
   ios: {
-    bundleIdentifier: "your.bundle.identifier",
+    bundleIdentifier: "com.kanenguyen.duosnap",
     supportsTablet: true,
     icon: {
       light: "./assets/icon-light.png",
@@ -23,23 +23,16 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
   },
   android: {
-    package: "your.bundle.identifier",
+    package: "com.kanenguyen.duosnap",
     adaptiveIcon: {
       foregroundImage: "./assets/icon-light.png",
-      backgroundColor: "#1F104A",
+      backgroundColor: "#180914",
     },
     edgeToEdgeEnabled: true,
   },
-  // extra: {
-  //   eas: {
-  //     projectId: "your-eas-project-id",
-  //   },
-  // },
   experiments: {
     tsconfigPaths: true,
     typedRoutes: true,
-    reactCanary: true,
-    reactCompiler: true,
   },
   plugins: [
     "expo-router",
@@ -48,13 +41,20 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-splash-screen",
       {
-        backgroundColor: "#E4E4E7",
+        backgroundColor: "#180914",
         image: "./assets/icon-light.png",
         dark: {
-          backgroundColor: "#18181B",
+          backgroundColor: "#180914",
           image: "./assets/icon-dark.png",
         },
       },
     ],
+    [
+      "expo-camera",
+      {
+        cameraPermission: "Duo Snap needs access to your camera to capture and share moments.",
+      },
+    ],
   ],
 });
+

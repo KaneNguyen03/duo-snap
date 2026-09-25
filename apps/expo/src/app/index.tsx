@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
+import * as Linking from "expo-linking";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { LegendList } from "@legendapp/list";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -132,6 +133,9 @@ export default function Index() {
 
     const { error } = await supabase.auth.signInWithOtp({
       email: normalizedEmail,
+      options: {
+        emailRedirectTo: Linking.createURL("/"),
+      },
     });
 
     if (error) {
