@@ -1,0 +1,7 @@
+{
+  "name": "@duo-snap/tsconfig",
+  "private": true,
+  "files": [
+    "*.json"
+  ]
+}

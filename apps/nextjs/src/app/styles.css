@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@import "@duo-snap/tailwind-config/theme";
+
+@source "../../../node_modules/@duo-snap/ui";
+@source "../../../packages/ui/src";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--primary) 28%, transparent);
+}
+
