@@ -12,7 +12,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   updates: {
     fallbackToCacheTimeout: 0,
   },
-  
+
   assetBundlePatterns: ["**/*"],
   ios: {
     bundleIdentifier: "com.kanenguyen.duosnap",
@@ -28,7 +28,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: "./assets/icon-light.png",
       backgroundColor: "#180914",
     },
-    
   },
   experiments: {
     tsconfigPaths: true,
@@ -52,9 +51,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-camera",
       {
-        cameraPermission: "Duo Snap needs access to your camera to capture and share moments.",
+        cameraPermission:
+          "Duo Snap needs access to your camera to capture and share moments.",
       },
     ],
   ],
 });
-

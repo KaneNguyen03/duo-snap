@@ -9,10 +9,13 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { useSafeAreaInsets, SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
-import * as Linking from "expo-linking";
 import { CameraView, useCameraPermissions } from "expo-camera";
+import * as Linking from "expo-linking";
 import { LegendList } from "@legendapp/list";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Heart, LogOut, Send, X } from "lucide-react-native";
@@ -37,7 +40,7 @@ function PostCard(props: { post: RouterOutputs["photos"]["list"][number] }) {
     <View className="mb-4 overflow-hidden rounded-[2rem] bg-zinc-900 shadow-2xl">
       {post.imageUrl ? (
         <View className="aspect-[3/4] w-full bg-zinc-800">
-          <Text className="text-zinc-500 absolute inset-0 flex items-center justify-center p-4 text-center">
+          <Text className="absolute inset-0 flex items-center justify-center p-4 text-center text-zinc-500">
             {/* Real React Native Image goes here; placeholder for mock */}
             ImageUrl: {post.imageUrl.slice(0, 30)}...
           </Text>
@@ -48,17 +51,21 @@ function PostCard(props: { post: RouterOutputs["photos"]["list"][number] }) {
         </View>
       )}
 
-      <BlurView intensity={80} tint="dark" className="absolute bottom-0 w-full p-5">
+      <BlurView
+        intensity={80}
+        tint="dark"
+        className="absolute bottom-0 w-full p-5"
+      >
         <View className="flex-row items-center justify-between gap-3">
           <Text className="font-semibold text-white">
             {post.author.displayName ?? post.author.email}
           </Text>
-          <Text className="text-zinc-300 text-xs">
+          <Text className="text-xs text-zinc-300">
             {formatTime(post.createdAt)}
           </Text>
         </View>
         {post.caption && (
-          <Text className="text-zinc-200 mt-2 text-sm">{post.caption}</Text>
+          <Text className="mt-2 text-sm text-zinc-200">{post.caption}</Text>
         )}
       </BlurView>
     </View>
@@ -143,7 +150,10 @@ export default function Index() {
       return;
     }
 
-    Alert.alert("Success", "Magic link sent to your email. You can close this and click the link.");
+    Alert.alert(
+      "Success",
+      "Magic link sent to your email. You can close this and click the link.",
+    );
   }
 
   async function handleSignOut() {
@@ -207,13 +217,13 @@ export default function Index() {
           <Text className="mt-6 text-center text-4xl font-black text-white">
             Duo Snap
           </Text>
-          <Text className="text-zinc-400 mt-2 text-center text-lg">
+          <Text className="mt-2 text-center text-lg text-zinc-400">
             A private feed just for two.
           </Text>
         </View>
 
         <TextInput
-          className="border-zinc-800 bg-zinc-900 text-zinc-100 h-14 rounded-xl border px-4 text-lg"
+          className="h-14 rounded-xl border border-zinc-800 bg-zinc-900 px-4 text-lg text-zinc-100"
           placeholder="person1@example.com"
           placeholderTextColor="#52525b"
           value={email}
@@ -233,7 +243,7 @@ export default function Index() {
 
   return (
     <View className="flex-1 bg-zinc-950" style={{ paddingTop: insets.top }}>
-      <View className="flex-row items-center justify-between px-4 pb-2 pt-2">
+      <View className="flex-row items-center justify-between px-4 pt-2 pb-2">
         <Text className="text-2xl font-black tracking-tighter text-[#ff4d8d]">
           Duo Snap
         </Text>
@@ -253,7 +263,7 @@ export default function Index() {
       <BlurView
         intensity={80}
         tint="dark"
-        className="absolute bottom-0 w-full flex-row justify-center pb-8 pt-4"
+        className="absolute bottom-0 w-full flex-row justify-center pt-4 pb-8"
       >
         <Pressable
           className="h-20 w-20 items-center justify-center rounded-full bg-[#ff4d8d] shadow-xl"
@@ -305,7 +315,7 @@ export default function Index() {
 
               <View className="mb-4 flex-row items-center gap-2">
                 <TextInput
-                  className="bg-zinc-800 text-zinc-100 flex-1 rounded-full px-5 py-4 text-lg"
+                  className="flex-1 rounded-full bg-zinc-800 px-5 py-4 text-lg text-zinc-100"
                   placeholder="Add a tiny note..."
                   placeholderTextColor="#71717a"
                   value={caption}
@@ -315,7 +325,8 @@ export default function Index() {
                   className="h-14 w-14 items-center justify-center rounded-full bg-[#ff4d8d]"
                   onPress={handleSend}
                 >
-                  {uploadUrlMutation.isPending || createPhotoMutation.isPending ? (
+                  {uploadUrlMutation.isPending ||
+                  createPhotoMutation.isPending ? (
                     <ActivityIndicator color="#fff" />
                   ) : (
                     <Send size={20} color="#fff" />
@@ -329,4 +340,3 @@ export default function Index() {
     </View>
   );
 }
-

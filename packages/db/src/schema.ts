@@ -56,4 +56,3 @@ export const storagePoliciesSql = sql`
   -- Run these in Supabase SQL editor if you choose direct authenticated uploads.
   -- The app primarily uses photos.createUploadUrl, so clients never receive a service-role key.
 `;
-

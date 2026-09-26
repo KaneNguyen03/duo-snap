@@ -1,11 +1,22 @@
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod/v4";
 
-import { getAllowedEmails, getConfigStatus, isAllowedEmail } from "@duo-snap/auth";
+import {
+  getAllowedEmails,
+  getConfigStatus,
+  isAllowedEmail,
+} from "@duo-snap/auth";
 
 import { protectedProcedure, publicProcedure } from "../trpc";
 
 export const authRouter = {
+  checkEmail: publicProcedure
+    .input(z.object({ email: z.string().email() }))
+    .mutation(({ input }) => {
+      const allowedEmails = (process.env.ALLOWED_EMAILS || "").split(",").map(e => e.trim().toLowerCase());
+      const isAllowed = allowedEmails.includes(input.email.trim().toLowerCase());
+      return { allowed: isAllowed };
+    }),
   status: publicProcedure.query(() => getConfigStatus()),
 
   canRequestSignIn: publicProcedure
@@ -26,4 +37,3 @@ export const authRouter = {
 
   me: protectedProcedure.query(({ ctx }) => ctx.user),
 } satisfies TRPCRouterRecord;
-

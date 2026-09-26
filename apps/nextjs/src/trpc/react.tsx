@@ -77,6 +77,7 @@ const getBaseUrl = () => {
   if (typeof window !== "undefined") return window.location.origin;
   if (env.VERCEL_URL) return "https://" + env.VERCEL_URL;
 
-  return env.NEXT_PUBLIC_APP_URL ?? "http://localhost:" + (process.env.PORT ?? 3000);
+  return (
+    env.NEXT_PUBLIC_APP_URL ?? "http://localhost:" + (process.env.PORT ?? 3000)
+  );
 };
-
