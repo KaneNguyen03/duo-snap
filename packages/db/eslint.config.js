@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var config_1 = require("eslint/config");
 var base_1 = require("@duo-snap/eslint-config/base");
-exports.default = (0, config_1.defineConfig)({
+exports.default = (0, config_1.defineConfig)(
+  {
     ignores: ["dist/**"],
-}, base_1.baseConfig);
+  },
+  base_1.baseConfig,
+);

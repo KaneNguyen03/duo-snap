@@ -154,4 +154,3 @@ export function getConfigStatus() {
     allowedEmailCount: getAllowedEmails().size,
   };
 }
-

@@ -1,9 +1,13 @@
-import type { TRPCRouterRecord } from "@trpc/server";
 import { randomUUID } from "node:crypto";
+import type { TRPCRouterRecord } from "@trpc/server";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod/v4";
 
-import { createSupabaseAdminClient, MissingSupabaseConfigError, SNAP_BUCKET } from "@duo-snap/auth";
+import {
+  createSupabaseAdminClient,
+  MissingSupabaseConfigError,
+  SNAP_BUCKET,
+} from "@duo-snap/auth";
 import { eq } from "@duo-snap/db";
 import { CreatePhotoSchema, photos } from "@duo-snap/db/schema";
 
@@ -14,10 +18,17 @@ const imageContentTypeSchema = z
   .regex(/^image\//, "Only image uploads are supported.");
 
 function extensionFrom(fileName: string, contentType: string) {
-  const fromFile = fileName.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const fromFile = fileName
+    .split(".")
+    .pop()
+    ?.toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
   if (fromFile) return fromFile;
 
-  const fromType = contentType.split("/").at(1)?.replace(/[^a-z0-9]/g, "");
+  const fromType = contentType
+    .split("/")
+    .at(1)
+    ?.replace(/[^a-z0-9]/g, "");
   return fromType || "jpg";
 }
 
@@ -108,33 +119,37 @@ export const photoRouter = {
       };
     }),
 
-  create: protectedProcedure.input(CreatePhotoSchema).mutation(async ({ ctx, input }) => {
-    if (!input.imagePath.startsWith(`${ctx.user.id}/`)) {
-      throw new TRPCError({
-        code: "FORBIDDEN",
-        message: "Photos can only be attached to the signed upload path for your user.",
-      });
-    }
+  create: protectedProcedure
+    .input(CreatePhotoSchema)
+    .mutation(async ({ ctx, input }) => {
+      if (!input.imagePath.startsWith(`${ctx.user.id}/`)) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message:
+            "Photos can only be attached to the signed upload path for your user.",
+        });
+      }
 
-    const [photo] = await ctx.db
-      .insert(photos)
-      .values({
-        userId: ctx.user.id,
-        imagePath: input.imagePath,
-        caption: input.caption?.trim() || null,
-      })
-      .returning();
+      const [photo] = await ctx.db
+        .insert(photos)
+        .values({
+          userId: ctx.user.id,
+          imagePath: input.imagePath,
+          caption: input.caption?.trim() || null,
+        })
+        .returning();
 
-    return photo;
-  }),
+      return photo;
+    }),
 
-  delete: protectedProcedure.input(z.object({ id: z.string().uuid() })).mutation(async ({ ctx, input }) => {
-    const [photo] = await ctx.db
-      .delete(photos)
-      .where(eq(photos.id, input.id))
-      .returning();
+  delete: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const [photo] = await ctx.db
+        .delete(photos)
+        .where(eq(photos.id, input.id))
+        .returning();
 
-    return photo ?? null;
-  }),
+      return photo ?? null;
+    }),
 } satisfies TRPCRouterRecord;
-

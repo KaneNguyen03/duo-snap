@@ -35,7 +35,10 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
           if (supabase) {
             const { data } = await supabase.auth.getSession();
             if (data.session?.access_token) {
-              headers.set("authorization", "Bearer " + data.session.access_token);
+              headers.set(
+                "authorization",
+                "Bearer " + data.session.access_token,
+              );
             }
           }
           return headers;
@@ -47,4 +50,3 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
 });
 
 export type { RouterInputs, RouterOutputs } from "@duo-snap/api";
-

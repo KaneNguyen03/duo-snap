@@ -2,6 +2,7 @@
 
 import type { Session } from "@supabase/supabase-js";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Camera,
@@ -13,7 +14,6 @@ import {
   Sparkles,
   UploadCloud,
 } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { SNAP_BUCKET } from "@duo-snap/auth";
 import { Badge } from "@duo-snap/ui/badge";
@@ -227,7 +227,7 @@ export function DuoSnapApp() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,77,141,0.24),_transparent_34%),linear-gradient(135deg,_#fff7fb_0%,_#fff_45%,_#f8fbff_100%)] px-4 py-6 dark:bg-[radial-gradient(circle_at_top_left,_rgba(255,77,141,0.18),_transparent_34%),linear-gradient(135deg,_#180914_0%,_#0b0b12_50%,_#101827_100%)]">
-      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-primary/15 to-transparent blur-3xl" />
+      <div className="from-primary/15 absolute inset-x-0 top-0 h-48 bg-gradient-to-b to-transparent blur-3xl" />
 
       <section className="relative mx-auto grid w-full max-w-6xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <motion.div
@@ -260,7 +260,7 @@ export function DuoSnapApp() {
                 >
                   <CardContent className="space-y-1 px-4">
                     <p className="text-2xl font-black">{value}</p>
-                    <p className="text-muted-foreground text-xs uppercase tracking-[0.2em]">
+                    <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
                       {label}
                     </p>
                   </CardContent>
@@ -272,19 +272,31 @@ export function DuoSnapApp() {
           <Card className="mt-8 border-white/70 bg-white/80 dark:border-white/10 dark:bg-white/5">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sparkles className="size-5 text-primary" />
+                <Sparkles className="text-primary size-5" />
                 Setup status
               </CardTitle>
               <CardDescription>
-                The app renders without secrets. Add .env values to unlock
-                auth, database, and storage.
+                The app renders without secrets. Add .env values to unlock auth,
+                database, and storage.
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-2 text-sm">
-              <StatusLine ok={Boolean(config?.hasSupabaseUrl)} label="Supabase URL" />
-              <StatusLine ok={Boolean(config?.hasSupabaseAnonKey)} label="Anon key" />
-              <StatusLine ok={Boolean(config?.hasSupabaseServiceRoleKey)} label="Server service role for signed uploads" />
-              <StatusLine ok={Boolean(config?.allowedEmailCount)} label="ALLOWED_EMAILS allowlist" />
+              <StatusLine
+                ok={Boolean(config?.hasSupabaseUrl)}
+                label="Supabase URL"
+              />
+              <StatusLine
+                ok={Boolean(config?.hasSupabaseAnonKey)}
+                label="Anon key"
+              />
+              <StatusLine
+                ok={Boolean(config?.hasSupabaseServiceRoleKey)}
+                label="Server service role for signed uploads"
+              />
+              <StatusLine
+                ok={Boolean(config?.allowedEmailCount)}
+                label="ALLOWED_EMAILS allowlist"
+              />
             </CardContent>
           </Card>
         </motion.div>
@@ -293,7 +305,7 @@ export function DuoSnapApp() {
           <Card className="border-white/70 bg-white/85 shadow-xl shadow-pink-500/10 backdrop-blur dark:border-white/10 dark:bg-white/5">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-2xl">
-                <Heart className="size-6 fill-primary text-primary" />
+                <Heart className="fill-primary text-primary size-6" />
                 {userEmail ? "Shared feed" : "Sign in to your private duo"}
               </CardTitle>
               <CardDescription>
@@ -304,7 +316,7 @@ export function DuoSnapApp() {
             </CardHeader>
             <CardContent>
               {!authReady ? (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="text-muted-foreground flex items-center gap-2 text-sm">
                   <Loader2 className="size-4 animate-spin" />
                   Checking session...
                 </div>
@@ -317,7 +329,10 @@ export function DuoSnapApp() {
                   </Button>
                 </div>
               ) : (
-                <form className="grid gap-3 sm:grid-cols-[1fr_auto]" onSubmit={handleLogin}>
+                <form
+                  className="grid gap-3 sm:grid-cols-[1fr_auto]"
+                  onSubmit={handleLogin}
+                >
                   <Input
                     type="email"
                     placeholder="person1@example.com"
@@ -325,11 +340,14 @@ export function DuoSnapApp() {
                     onChange={(event) => setEmail(event.target.value)}
                     disabled={!supabase}
                   />
-                  <Button type="submit" disabled={!supabase || statusQuery.isLoading}>
+                  <Button
+                    type="submit"
+                    disabled={!supabase || statusQuery.isLoading}
+                  >
                     Send magic link
                   </Button>
                   {!isConfigured && (
-                    <p className="text-muted-foreground sm:col-span-2 text-sm">
+                    <p className="text-muted-foreground text-sm sm:col-span-2">
                       Configure Supabase credentials and the two allowed emails
                       before requesting real magic links.
                     </p>
@@ -350,7 +368,7 @@ export function DuoSnapApp() {
                 <Card className="border-white/70 bg-white/85 shadow-xl shadow-pink-500/10 backdrop-blur dark:border-white/10 dark:bg-white/5">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Camera className="size-5 text-primary" />
+                      <Camera className="text-primary size-5" />
                       Capture a snap
                     </CardTitle>
                     <CardDescription>
@@ -400,7 +418,7 @@ export function DuoSnapApp() {
             {session && photosQuery.data?.length === 0 && (
               <Card className="border-dashed bg-white/70 py-10 text-center dark:bg-white/5">
                 <CardContent className="space-y-3">
-                  <ImagePlus className="mx-auto size-10 text-primary" />
+                  <ImagePlus className="text-primary mx-auto size-10" />
                   <p className="text-lg font-semibold">No snaps yet</p>
                   <p className="text-muted-foreground text-sm">
                     Upload the first photo and it will appear here.
@@ -439,7 +457,9 @@ export function DuoSnapApp() {
                         <p className="font-semibold">
                           {photo.author.displayName ?? photo.author.email}
                         </p>
-                        <Badge variant="secondary">{formatTime(photo.createdAt)}</Badge>
+                        <Badge variant="secondary">
+                          {formatTime(photo.createdAt)}
+                        </Badge>
                       </div>
                       {photo.caption && (
                         <p className="text-muted-foreground">{photo.caption}</p>
@@ -453,7 +473,10 @@ export function DuoSnapApp() {
         </div>
       </section>
 
-      <Dialog open={Boolean(selectedPhoto)} onOpenChange={() => setSelectedPhoto(null)}>
+      <Dialog
+        open={Boolean(selectedPhoto)}
+        onOpenChange={() => setSelectedPhoto(null)}
+      >
         <DialogContent className="max-w-3xl overflow-hidden p-0">
           {selectedPhoto && (
             <>
@@ -470,7 +493,8 @@ export function DuoSnapApp() {
               )}
               <DialogHeader className="p-6">
                 <DialogTitle>
-                  {selectedPhoto.author.displayName ?? selectedPhoto.author.email}
+                  {selectedPhoto.author.displayName ??
+                    selectedPhoto.author.email}
                 </DialogTitle>
                 <DialogDescription>
                   {selectedPhoto.caption || "A quiet little snap."}
@@ -488,7 +512,9 @@ function StatusLine({ ok, label }: { ok: boolean; label: string }) {
   return (
     <div className="flex items-center justify-between rounded-lg bg-black/[0.03] px-3 py-2 dark:bg-white/[0.04]">
       <span>{label}</span>
-      <Badge variant={ok ? "success" : "outline"}>{ok ? "ready" : "missing"}</Badge>
+      <Badge variant={ok ? "success" : "outline"}>
+        {ok ? "ready" : "missing"}
+      </Badge>
     </div>
   );
 }
@@ -508,4 +534,3 @@ function FeedSkeleton() {
     </div>
   );
 }
-

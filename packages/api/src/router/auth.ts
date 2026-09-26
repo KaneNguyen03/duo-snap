@@ -1,7 +1,11 @@
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod/v4";
 
-import { getAllowedEmails, getConfigStatus, isAllowedEmail } from "@duo-snap/auth";
+import {
+  getAllowedEmails,
+  getConfigStatus,
+  isAllowedEmail,
+} from "@duo-snap/auth";
 
 import { protectedProcedure, publicProcedure } from "../trpc";
 
@@ -26,4 +30,3 @@ export const authRouter = {
 
   me: protectedProcedure.query(({ ctx }) => ctx.user),
 } satisfies TRPCRouterRecord;
-

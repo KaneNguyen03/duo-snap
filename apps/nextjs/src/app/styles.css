@@ -17,4 +17,3 @@ body {
 ::selection {
   background: color-mix(in oklab, var(--primary) 28%, transparent);
 }
-

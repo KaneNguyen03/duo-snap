@@ -37,4 +37,3 @@ export function requireDb(database: typeof db = db): Database {
 
   return database;
 }
-
