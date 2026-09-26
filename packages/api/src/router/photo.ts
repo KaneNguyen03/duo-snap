@@ -143,13 +143,33 @@ export const photoRouter = {
     }),
 
   delete: protectedProcedure
-    .input(z.object({ id: z.string().uuid() }))
-    .mutation(async ({ ctx, input }) => {
-      const [photo] = await ctx.db
-        .delete(photos)
-        .where(eq(photos.id, input.id))
-        .returning();
+.input(z.object({ id: z.string().uuid() }))
+.mutation(async ({ ctx, input }) => {
+  const existing = await ctx.db.query.photos.findFirst({
+    where: eq(photos.id, input.id)
+  });
+  if (!existing) {
+    throw new TRPCError({ code: "NOT_FOUND", message: "Photo not found" });
+  }
+  if (existing.userId !== ctx.user.id) {
+    throw new TRPCError({ code: "FORBIDDEN", message: "Not your photo" });
+  }
 
-      return photo ?? null;
-    }),
+  try {
+    const supabase = createSupabaseAdminClient();
+    const { error } = await supabase.storage.from(SNAP_BUCKET).remove([existing.imagePath]);
+    if (error) {
+      console.error("Storage cleanup error:", error);
+    }
+  } catch (err) {
+    console.error("Storage cleanup exception:", err);
+  }
+
+  const [photo] = await ctx.db
+    .delete(photos)
+    .where(eq(photos.id, input.id))
+    .returning();
+
+  return photo ?? null;
+}),
 } satisfies TRPCRouterRecord;

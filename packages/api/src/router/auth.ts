@@ -10,6 +10,13 @@ import {
 import { protectedProcedure, publicProcedure } from "../trpc";
 
 export const authRouter = {
+  checkEmail: publicProcedure
+    .input(z.object({ email: z.string().email() }))
+    .mutation(({ input }) => {
+      const allowedEmails = (process.env.ALLOWED_EMAILS || "").split(",").map(e => e.trim().toLowerCase());
+      const isAllowed = allowedEmails.includes(input.email.trim().toLowerCase());
+      return { allowed: isAllowed };
+    }),
   status: publicProcedure.query(() => getConfigStatus()),
 
   canRequestSignIn: publicProcedure
